@@ -1,4 +1,4 @@
-package com.microservices.demo.producer;
+package com.microservices.demo.producer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

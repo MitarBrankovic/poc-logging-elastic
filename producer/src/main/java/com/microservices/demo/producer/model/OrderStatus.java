@@ -1,4 +1,4 @@
-package com.microservices.demo.producer;
+package com.microservices.demo.producer.model;
 
 public enum OrderStatus {
     PROCESSING,

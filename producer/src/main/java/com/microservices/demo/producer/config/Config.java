@@ -1,4 +1,4 @@
-package com.microservices.demo.producer;
+package com.microservices.demo.producer.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Autowired;

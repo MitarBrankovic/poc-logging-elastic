@@ -1,8 +1,7 @@
-package com.microservices.demo.producer;
+package com.microservices.demo.producer.model;
 
+import com.microservices.demo.producer.model.OrderStatus;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.UUID;

@@ -1,9 +1,13 @@
-package com.microservices.demo.producer;
+package com.microservices.demo.producer.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.microservices.demo.producer.model.Producer;
+import com.microservices.demo.producer.dto.FoodOrderDto;
+import com.microservices.demo.producer.dto.RequestDto;
 import com.microservices.demo.producer.logging.Log;
+import com.microservices.demo.producer.model.OrderStatus;
+import com.microservices.demo.producer.repository.FoodOrderRequestRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

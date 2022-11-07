@@ -1,5 +1,6 @@
-package com.microservices.demo.producer;
+package com.microservices.demo.producer.repository;
 
+import com.microservices.demo.producer.model.FoodOrderRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
