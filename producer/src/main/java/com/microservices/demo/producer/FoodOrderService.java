@@ -1,6 +1,7 @@
 package com.microservices.demo.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.microservices.demo.producer.logging.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class FoodOrderService {
         this.repository = repository;
     }
 
+    @Log(showArgs = true)
     public void createFoodOrder(FoodOrderDto dto) throws JsonProcessingException {
         FoodOrderRequest request = new FoodOrderRequest(dto.getItem(), dto.getAmount(), dto.getPrice());
         RequestDto requestDto = new RequestDto(request.getId(), dto.getItem(), dto.getAmount(), dto.getPrice());

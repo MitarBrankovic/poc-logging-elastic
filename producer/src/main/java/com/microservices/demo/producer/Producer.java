@@ -27,7 +27,6 @@ public class Producer {
     public String sendMessage(RequestDto requestDto) throws JsonProcessingException {
         String orderAsMessage = objectMapper.writeValueAsString(requestDto);
         kafkaTemplate.send(orderTopic, orderAsMessage);
-
         log.info("food order produced {}", orderAsMessage);
 
         return "message sent";

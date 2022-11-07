@@ -1,6 +1,7 @@
 package com.microservices.demo.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.microservices.demo.producer.logging.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class FoodOrderController {
 
     @PostMapping
     public void createFoodOrder(@RequestBody FoodOrderDto dto) throws JsonProcessingException {
-        log.info("create food order request received");
+//        log.info("create food order request received");
         foodOrderService.createFoodOrder(dto);
     }
 
