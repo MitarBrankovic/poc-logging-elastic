@@ -1,0 +1,153 @@
+From 6c93eb0d3c6b6abb31fb10acd41bf38fb5cc8118 Mon Sep 17 00:00:00 2001
+From: Vladimir Dabic <vladadaba92@gmail.com>
+Date: Fri, 28 Oct 2022 15:33:14 +0200
+Subject: [PATCH] fixed
+
+---
+ .../src/main/resources/application.properties |  1 +
+ .../consumer/ConsumerApplicationTests.java    | 13 ------
+ docker-compose.yml                            | 45 ++++++++-----------
+ .../src/main/resources/application.properties |  1 +
+ .../producer/ProducerApplicationTests.java    | 13 ------
+ 5 files changed, 21 insertions(+), 52 deletions(-)
+ delete mode 100644 consumer/src/test/java/com/microservices/demo/consumer/ConsumerApplicationTests.java
+ delete mode 100644 producer/src/test/java/com/microservices/demo/producer/ProducerApplicationTests.java
+
+diff --git a/consumer/src/main/resources/application.properties b/consumer/src/main/resources/application.properties
+index 6629fa9..4920825 100644
+--- a/consumer/src/main/resources/application.properties
++++ b/consumer/src/main/resources/application.properties
+@@ -6,3 +6,4 @@ spring.datasource.url=jdbc:h2:mem:testdb
+ spring.datasource.username=sa
+ spring.datasource.password=password
+ topic.name=t.food.order
++spring.kafka.bootstrap-servers=kafka:9092
+\ No newline at end of file
+diff --git a/consumer/src/test/java/com/microservices/demo/consumer/ConsumerApplicationTests.java b/consumer/src/test/java/com/microservices/demo/consumer/ConsumerApplicationTests.java
+deleted file mode 100644
+index 6f2b872..0000000
+--- a/consumer/src/test/java/com/microservices/demo/consumer/ConsumerApplicationTests.java
++++ /dev/null
+@@ -1,13 +0,0 @@
+-package com.microservices.demo.consumer;
+-
+-import org.junit.jupiter.api.Test;
+-import org.springframework.boot.test.context.SpringBootTest;
+-
+-@SpringBootTest
+-class ConsumerApplicationTests {
+-
+-	@Test
+-	void contextLoads() {
+-	}
+-
+-}
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 150edfd..9c5f02c 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -1,10 +1,5 @@
+ version: "3.7"
+ 
+-networks:
+-  kafka-net:
+-    name: kafka-net
+-    driver: bridge
+-
+ services:
+   producer:
+     build:
+@@ -27,28 +22,30 @@ services:
+       - "zookeeper"
+       - "kafdrop"
+   zookeeper:
+-    image: zookeeper:3.7.0
+-    container_name: zookeeper
+-    restart: "no"
+-    networks:
+-      - kafka-net
++    image: wurstmeister/zookeeper
+     ports:
+       - "2181:2181"
+ 
+   kafka:
+-    image: obsidiandynamics/kafka
+-    container_name: kafka
+-    restart: "no"
+-    networks:
+-      - kafka-net
++    image: wurstmeister/kafka
+     ports:
+       - "9092:9092"
+     environment:
+-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER_INTERNAL:PLAINTEXT,DOCKER_EXTERNAL:PLAINTEXT
+-      KAFKA_LISTENERS: DOCKER_INTERNAL://:29092,DOCKER_EXTERNAL://:9092
+-      KAFKA_ADVERTISED_LISTENERS: DOCKER_INTERNAL://kafka:29092,DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+-      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER_INTERNAL
+-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
++      KAFKA_ADVERTISED_LISTENERS: >-
++        LISTENER_DOCKER_INTERNAL://kafka:19092, 
++        LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-kafka}:9092
++      KAFKA_LISTENERS: >-
++        LISTENER_DOCKER_INTERNAL://:19092,
++        LISTENER_DOCKER_EXTERNAL://:9092
++      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: >-
++        LISTENER_DOCKER_INTERNAL:PLAINTEXT,
++        LISTENER_DOCKER_EXTERNAL:PLAINTEXT
++      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
++      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
++      KAFKA_LOG4J_LOGGERS: >-
++        kafka.controller=INFO,
++        kafka.producer.async.DefaultEventHandler=INFO,
++        state.change.logger=INFO
+       KAFKA_BROKER_ID: 1
+       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+     depends_on:
+@@ -56,13 +53,9 @@ services:
+ 
+   kafdrop:
+     image: obsidiandynamics/kafdrop
+-    container_name: kafdrop
+-    restart: "no"
+-    networks:
+-      - kafka-net
+     ports:
+       - "9000:9000"
+     environment:
+-      KAFKA_BROKERCONNECT: "kafka:29092"
++      KAFKA_BROKERCONNECT: "kafka:9092"
+     depends_on:
+-      - "kafka"
+\ No newline at end of file
++      - "kafka"
+diff --git a/producer/src/main/resources/application.properties b/producer/src/main/resources/application.properties
+index 74536c3..ed1ebaa 100644
+--- a/producer/src/main/resources/application.properties
++++ b/producer/src/main/resources/application.properties
+@@ -1,2 +1,3 @@
+ server.port=8080
+ topic.name = t.food.order
++spring.kafka.bootstrap-servers=kafka:9092
+\ No newline at end of file
+diff --git a/producer/src/test/java/com/microservices/demo/producer/ProducerApplicationTests.java b/producer/src/test/java/com/microservices/demo/producer/ProducerApplicationTests.java
+deleted file mode 100644
+index 8904bd2..0000000
+--- a/producer/src/test/java/com/microservices/demo/producer/ProducerApplicationTests.java
++++ /dev/null
+@@ -1,13 +0,0 @@
+-package com.microservices.demo.producer;
+-
+-import org.junit.jupiter.api.Test;
+-import org.springframework.boot.test.context.SpringBootTest;
+-
+-@SpringBootTest
+-class ProducerApplicationTests {
+-
+-	@Test
+-	void contextLoads() {
+-	}
+-
+-}
+-- 
+2.31.1
+
