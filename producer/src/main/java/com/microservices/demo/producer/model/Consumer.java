@@ -1,7 +1,10 @@
-package com.microservices.demo.producer;
+package com.microservices.demo.producer.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microservices.demo.producer.dto.ResponseDto;
+import com.microservices.demo.producer.model.OrderStatus;
+import com.microservices.demo.producer.service.FoodOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
