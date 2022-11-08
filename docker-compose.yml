@@ -25,6 +25,7 @@ services:
       DATABASE_URL: "jdbc:postgresql://db:5432/postgres"
       DATABASE_USER: "postgres"
       DATABASE_PW: "password"
+      KAFKA_URL: "kafka:9092"
     depends_on:
       - "kafka"
       - "zookeeper"
