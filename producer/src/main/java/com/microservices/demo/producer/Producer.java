@@ -1,17 +1,20 @@
-package com.microservices.demo.consumer;
+package com.microservices.demo.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-@Log4j2
+@Slf4j
 @Component
 public class Producer {
+
+    /*@Value("${topic.name}")
+    private String orderTopic;
+
     private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
@@ -21,12 +24,12 @@ public class Producer {
         this.objectMapper = objectMapper;
     }
 
-    public String sendMessage(ResponseDto responseDto, String address) throws JsonProcessingException {
-        String orderAsMessage = objectMapper.writeValueAsString(responseDto);
-        kafkaTemplate.send(address, orderAsMessage);
+    public String sendMessage(RequestDto requestDto) throws JsonProcessingException {
+        String orderAsMessage = objectMapper.writeValueAsString(requestDto);
+        kafkaTemplate.send(orderTopic, orderAsMessage);
 
-        log.info("food order response {}", orderAsMessage);
+        log.info("food order produced {}", orderAsMessage);
 
         return "message sent";
-    }
+    }*/
 }

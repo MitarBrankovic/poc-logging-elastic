@@ -2,21 +2,18 @@ package com.microservices.demo.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.KafkaListenerContainerFactory;
-import org.springframework.kafka.support.converter.JsonMessageConverter;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 public class Consumer {
 
     private static final String orderTopic = "${topic.name}";
+    private static final Logger log = LogManager.getLogger("elasticsearch");
     private final ObjectMapper objectMapper;
     private final FoodOrderService foodOrderService;
 
